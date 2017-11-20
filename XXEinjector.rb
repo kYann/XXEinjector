@@ -700,19 +700,19 @@ $xsl = "<?xml version=\"1.0\"?><xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http:
 # Starting servers
 begin
 	if ($xslt == "n" && enumports == "" && $logger == "n") || ($logger == "y" && enum == "http") || ($direct != "" && cdata == "y")
-		http = TCPServer.new http_port
+		http = TCPServer.new host, http_port
 	end
 	if enum == "ftp" && $xslt == "n" && enumports == "" && $direct == ""
-		ftp = TCPServer.new ftp_port
+		ftp = TCPServer.new host, ftp_port
 	end
 	if enum == "gopher" && $xslt == "n" && enumports == "" && $direct == ""
-		gopher = TCPServer.new gopher_port
+		gopher = TCPServer.new host, gopher_port
 	end
 	if upload != ""
-		jar = TCPServer.new jar_port
+		jar = TCPServer.new host, jar_port
 	end
 	if $xslt == "y"
-		xsltserv = TCPServer.new xslt_port
+		xsltserv = TCPServer.new host, xslt_port
 	end
 rescue Errno::EADDRINUSE
 	puts "Specified TCP ports already in use."
@@ -970,7 +970,7 @@ if enumports != ""
 			begin
 				Thread.start do
 				loop do
-				  enum = TCPServer.new j
+				  enum = TCPServer.new host, j
   				  Thread.start(enum.accept) do |client|
 					ports += String(j) + ","
 					client.close
@@ -995,7 +995,7 @@ if enumports != ""
 			begin
 				Thread.start do
 				loop do
-				  enum = TCPServer.new tcpport
+				  enum = TCPServer.new host, tcpport
   				  Thread.start(enum.accept) do |client|
 					ports += String(tcpport) + ","
 					client.close
